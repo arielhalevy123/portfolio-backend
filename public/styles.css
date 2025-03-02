@@ -14,26 +14,26 @@ body {
     left: 0;
     width: 100%;
     background: rgba(0, 0, 0, 0.9);
-    padding: 10px 20px; /* Reduced padding for smaller header */
+    padding: 8px 15px; /* Adjusted for smaller header */
     display: flex;
     justify-content: space-between;
     align-items: center;
     transition: all 0.3s ease;
     z-index: 1000;
-    height: 60px; /* Reduced height */
+    height: 50px; /* Reduced height */
 }
 
 .navbar {
     display: flex;
-    gap: 20px;
+    gap: 15px;
     margin-left: auto;
-    margin-right: 40px;
+    margin-right: 30px;
 }
 
 .navbar a {
     color: white;
     text-decoration: none;
-    font-size: 1.2rem;
+    font-size: 1rem;
     transition: color 0.3s;
 }
 
@@ -43,14 +43,14 @@ body {
 
 /* Signature in Header */
 .signature {
-    width: 100px; /* Reduced size for better fit */
+    width: 80px; /* Adjusted size for better mobile fit */
     height: auto;
     margin-left: 20px;
 }
 
 /* Adjusted padding to prevent section overlap */
 body {
-    padding-top: 70px;
+    padding-top: 60px;
 }
 
 /* Home Section */
@@ -85,8 +85,8 @@ body {
 }
 
 .home-img-container img {
-    width: 200px;
-    height: 200px;
+    width: 180px; /* Adjusted for mobile */
+    height: 180px;
     border-radius: 50%;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
     object-fit: cover;
@@ -101,7 +101,7 @@ body {
 
 .social-media a {
     color: white;
-    font-size: 2rem;
+    font-size: 1.5rem;
     margin: 10px;
     transition: color 0.3s;
 }
@@ -117,6 +117,7 @@ body {
     justify-content: center;
     gap: 40px;
     padding: 50px;
+    flex-wrap: wrap;
 }
 
 .about-text {
@@ -125,12 +126,12 @@ body {
 }
 
 .about-text h2 {
-    font-size: 2rem;
+    font-size: 1.8rem;
     color: #ffffff;
 }
 
 .about-text p {
-    font-size: 1.1rem;
+    font-size: 1rem;
     line-height: 1.5;
     color: #bbbbbb;
 }
@@ -140,15 +141,15 @@ body {
 }
 
 .about-img {
-    width: 300px;
-    height: 300px;
+    width: 250px; /* Adjusted for mobile */
+    height: 250px;
     border-radius: 50%;
     object-fit: cover;
 }
 
 /* Projects Section */
 .projects {
-    padding: 80px 20px; /* Increased padding to prevent overlap */
+    padding: 100px 20px; /* Increased padding to prevent overlap */
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -225,4 +226,31 @@ body {
 .footer {
     background: #000;
     padding: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .home {
+        flex-direction: column;
+        text-align: center;
+        padding: 60px 20px;
+    }
+
+    .home-container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .home-text, .home-img-container {
+        max-width: 100%;
+    }
+
+    .home-img-container img {
+        width: 150px;
+        height: 150px;
+    }
+
+    .navbar a {
+        font-size: 0.9rem;  
+    }
 }
