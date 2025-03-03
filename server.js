@@ -24,7 +24,6 @@ app.get("/track", async (req, res) => {
     const agent = useragent.parse(req.headers["user-agent"]);
     let ip = req.headers["x-forwarded-for"]?.split(",")[0] || req.connection.remoteAddress;
 
-    // 🔹 אם ה-IP פנימי, נשתמש ב-IP חיצוני
     if (ip.startsWith("10.") || ip.startsWith("127.") || ip.startsWith("::1")) {
         console.log("⚠️ Internal IP detected. Fetching external IP...");
         try {
@@ -35,35 +34,51 @@ app.get("/track", async (req, res) => {
         }
     }
 
-    // 🔹 שליפת מיקום על בסיס ה-IP
     let location = "Unknown";
+    let timezone = "UTC"; // ברירת מחדל אם לא נמצא
     try {
         const geoResponse = await axios.get(`https://ipwho.is/${ip}`);
         if (geoResponse.data.success) {
             location = `${geoResponse.data.city}, ${geoResponse.data.country}`;
+            timezone = geoResponse.data.timezone.id || "UTC"; // שימוש באזור הזמן מה-API
         } else {
             console.error("⚠️ IPWHO failed, trying backup API...");
-            const backupGeo = await axios.get(`http://ip-api.com/json/${ip}?fields=status,country,city`);
+            const backupGeo = await axios.get(`http://ip-api.com/json/${ip}?fields=status,country,city,timezone`);
             if (backupGeo.data.status === "success") {
                 location = `${backupGeo.data.city}, ${backupGeo.data.country}`;
+                timezone = backupGeo.data.timezone || "UTC";
             }
         }
     } catch (error) {
-        console.error("❌ Failed to get location:", error);
+        console.error("❌ Failed to get location and timezone:", error);
     }
 
+    // ✅ רשימת תובנות (למראה מתקדם)
+    const insights = [
+        "📊 משתמש פעיל באתרי טכנולוגיה",
+        "📡 מחובר ל-WiFi ציבורי",
+        "🔍 מחפש מידע על פיתוח תוכנה",
+        "📅 ביקר באתר זה בעבר",
+        "🛡️ משתמש באמצעי אבטחה מתקדמים",
+        "🎧 מאזין למוזיקה תוך כדי גלישה"
+    ];
+    const randomInsight = insights[Math.floor(Math.random() * insights.length)];
+
+    // ✅ מחזירים את אזור הזמן כדי להמיר אותו ב-Frontend
     const visitorData = {
         ip: ip,
         location: location,
         browser: agent.family,
         os: agent.os.toString(),
         device: agent.device.family,
-        timestamp: new Date().toLocaleString()
+        timezone: timezone, // שליחת אזור הזמן למשתמש
+        insight: randomInsight
     };
 
     console.log("📊 Visitor Info:", visitorData);
     res.json(visitorData);
 });
+
 
 // 🔹 מסלול לטופס יצירת קשר עם שליחת מייל
 app.post("/contact", async (req, res) => {

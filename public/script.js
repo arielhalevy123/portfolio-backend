@@ -34,13 +34,27 @@ document.addEventListener("DOMContentLoaded", async function () {
         const userData = await response.json();
         console.log("✅ User data received:", userData);
 
+        // 🕒 חישוב הזמן לפי אזור הזמן של המשתמש
+        let userTime = "Unknown";
+        if (userData.timezone) {
+            try {
+                userTime = new Intl.DateTimeFormat("en-GB", {
+                    timeZone: userData.timezone,
+                    dateStyle: "full",
+                    timeStyle: "long"
+                }).format(new Date());
+            } catch (error) {
+                console.error("❌ Failed to format user time:", error);
+            }
+        }
+
         document.getElementById("user-info").innerHTML = `
             <p><strong>🌍 IP Address:</strong> ${userData.ip}</p>
             <p><strong>📍 Location:</strong> ${userData.location}</p>
             <p><strong>🖥️ Browser:</strong> ${userData.browser}</p>
             <p><strong>💻 Operating System:</strong> ${userData.os}</p>
             <p><strong>📱 Device:</strong> ${userData.device}</p>
-            <p><strong>⏳ Access Time:</strong> ${userData.timestamp}</p>
+            <p><strong>⏳ Local Time:</strong> ${userTime}</p>
             <p><strong>🔮 Insight:</strong> ${userData.insight}</p>
         `;
     } catch (error) {
