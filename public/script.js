@@ -13,7 +13,7 @@ document.getElementById("contact-form").addEventListener("submit", async functio
         });
 
         const result = await response.json();
-        alert(result.message); /    // הצגת הודעה למשתמש
+        alert(result.message);     // הצגת הודעה למשתמש
 
         // ניקוי השדות אחרי שליחה מוצלחת
         document.getElementById("contact-form").reset();
