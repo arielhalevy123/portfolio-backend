@@ -88,4 +88,14 @@ function typeEffect(element, text, speed) {
     }
     type();
 }
+function showDetails(projectCard) {
+    const details = projectCard.querySelector(".project-details");
+    details.style.opacity = "1";
+    details.style.transform = "translateY(0)";
+}
 
+function hideDetails(projectCard) {
+    const details = projectCard.querySelector(".project-details");
+    details.style.opacity = "0";
+    details.style.transform = "translateY(20px)";
+}
