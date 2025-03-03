@@ -22,27 +22,35 @@ app.get("/", (req, res) => {
 // 🔹 מסלול לזיהוי מבקרים עם מידע "מרשים"
 app.get("/track", async (req, res) => {
     const agent = useragent.parse(req.headers["user-agent"]);
-    const ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+    let ip = req.headers["x-forwarded-for"]?.split(",")[0] || req.connection.remoteAddress;
 
-    // 🔍 זיהוי גיאוגרפי לפי כתובת IP
+    // 🔹 אם ה-IP פנימי, נשתמש ב-IP חיצוני
+    if (ip.startsWith("10.") || ip.startsWith("127.") || ip.startsWith("::1")) {
+        console.log("⚠️ Internal IP detected. Fetching external IP...");
+        try {
+            const ipResponse = await axios.get("https://api64.ipify.org?format=json");
+            ip = ipResponse.data.ip;
+        } catch (error) {
+            console.error("❌ Failed to get external IP:", error);
+        }
+    }
+
+    // 🔹 שליפת מיקום על בסיס ה-IP
     let location = "Unknown";
     try {
-        const geoResponse = await axios.get(`https://ipapi.co/${ip}/json/`);
-        if (geoResponse.data.country_name) {
-            location = `${geoResponse.data.city}, ${geoResponse.data.country_name}`;
+        const geoResponse = await axios.get(`https://ipwho.is/${ip}`);
+        if (geoResponse.data.success) {
+            location = `${geoResponse.data.city}, ${geoResponse.data.country}`;
+        } else {
+            console.error("⚠️ IPWHO failed, trying backup API...");
+            const backupGeo = await axios.get(`http://ip-api.com/json/${ip}?fields=status,country,city`);
+            if (backupGeo.data.status === "success") {
+                location = `${backupGeo.data.city}, ${backupGeo.data.country}`;
+            }
         }
     } catch (error) {
         console.error("❌ Failed to get location:", error);
     }
-
-    // 📌 יצירת "תובנות על המשתמש" (למראית עין)
-    const insights = [
-        "📊 משתמש פעיל באתרי טכנולוגיה",
-        "📡 מחובר ל-WiFi ציבורי",
-        "🔍 מחפש מידע על פיתוח תוכנה",
-        "📅 ביקר באתר זה בעבר"
-    ];
-    const randomInsight = insights[Math.floor(Math.random() * insights.length)];
 
     const visitorData = {
         ip: ip,
@@ -50,8 +58,7 @@ app.get("/track", async (req, res) => {
         browser: agent.family,
         os: agent.os.toString(),
         device: agent.device.family,
-        timestamp: new Date().toLocaleString(),
-        insight: randomInsight // 🔮 תובנה מדומה
+        timestamp: new Date().toLocaleString()
     };
 
     console.log("📊 Visitor Info:", visitorData);
