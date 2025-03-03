@@ -48,17 +48,44 @@ document.addEventListener("DOMContentLoaded", async function () {
             }
         }
 
-        document.getElementById("user-info").innerHTML = `
-            <p><strong>🌍 IP Address:</strong> ${userData.ip}</p>
-            <p><strong>📍 Location:</strong> ${userData.location}</p>
-            <p><strong>🖥️ Browser:</strong> ${userData.browser}</p>
-            <p><strong>💻 Operating System:</strong> ${userData.os}</p>
-            <p><strong>📱 Device:</strong> ${userData.device}</p>
-            <p><strong>⏳ Local Time:</strong> ${userTime}</p>
-            <p><strong>🔮 Insight:</strong> ${userData.insight}</p>
-        `;
+        // ⌨️ אפקט "כתיבה במסוף" להצגת הנתונים בצורה מרשימה
+        const terminalText = `
+==============================
+🔎 SYSTEM MONITORING DASHBOARD
+==============================
+
+🌍 IP Address: ${userData.ip}
+📍 Location: ${userData.location}
+🖥️ Browser: ${userData.browser}
+💻 Operating System: ${userData.os}
+📱 Device: ${userData.device}
+⏳ Local Time: ${userTime}
+🔮 Insight: ${userData.insight}
+
+==============================
+✅ Data retrieved successfully
+==============================
+`;
+
+        typeEffect(document.getElementById("user-info"), terminalText, 20);
+
     } catch (error) {
         console.error("❌ Error fetching user data:", error);
-        document.getElementById("user-info").innerHTML = `<p>Error loading user info: ${error.message}</p>`;
+        document.getElementById("user-info").innerText = `Error loading user info: ${error.message}`;
     }
 });
+
+// ⌨️ פונקציה לאפקט הקלדה כמו במסוף
+function typeEffect(element, text, speed) {
+    let index = 0;
+    element.innerText = ""; // מנקה את התוכן הקודם
+    function type() {
+        if (index < text.length) {
+            element.innerText += text.charAt(index);
+            index++;
+            setTimeout(type, speed);
+        }
+    }
+    type();
+}
+
