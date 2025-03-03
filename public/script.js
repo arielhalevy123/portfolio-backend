@@ -24,17 +24,27 @@ document.getElementById("contact-form").addEventListener("submit", async functio
 });
 document.addEventListener("DOMContentLoaded", async function () {
     try {
+        console.log("🔄 Fetching user info...");
         const response = await fetch("https://ariel-halevy-di5e.onrender.com/track");
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
         const userData = await response.json();
+        console.log("✅ User data received:", userData);
 
         document.getElementById("user-info").innerHTML = `
-            <p><strong>IP Address:</strong> ${userData.ip}</p>
-            <p><strong>Browser:</strong> ${userData.browser}</p>
-            <p><strong>Operating System:</strong> ${userData.os}</p>
-            <p><strong>Device:</strong> ${userData.device}</p>
+            <p><strong>🌍 IP Address:</strong> ${userData.ip}</p>
+            <p><strong>📍 Location:</strong> ${userData.location}</p>
+            <p><strong>🖥️ Browser:</strong> ${userData.browser}</p>
+            <p><strong>💻 Operating System:</strong> ${userData.os}</p>
+            <p><strong>📱 Device:</strong> ${userData.device}</p>
+            <p><strong>⏳ Access Time:</strong> ${userData.timestamp}</p>
+            <p><strong>🔮 Insight:</strong> ${userData.insight}</p>
         `;
     } catch (error) {
         console.error("❌ Error fetching user data:", error);
-        document.getElementById("user-info").innerHTML = "<p>Error loading user info.</p>";
+        document.getElementById("user-info").innerHTML = `<p>Error loading user info: ${error.message}</p>`;
     }
 });
