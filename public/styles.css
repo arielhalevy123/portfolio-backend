@@ -1,26 +1,27 @@
-/* General Styles */
+/* ====== GENERAL STYLES ====== */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     background-color: #121212;
     color: #ffffff;
+    padding-top: 60px; /* Adjusted to prevent overlap with header */
 }
 
-/* Sticky Header */
+/* ====== HEADER ====== */
 .header {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     background: rgba(0, 0, 0, 0.9);
-    padding: 8px 15px; /* Adjusted for smaller header */
+    padding: 8px 15px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     transition: all 0.3s ease;
     z-index: 1000;
-    height: 50px; /* Reduced height */
+    height: 50px;
 }
 
 .navbar {
@@ -41,19 +42,14 @@ body {
     color: #ff9800;
 }
 
-/* Signature in Header */
+/* ====== SIGNATURE LOGO ====== */
 .signature {
-    width: 80px; /* Adjusted size for better mobile fit */
+    width: 80px;
     height: auto;
     margin-left: 20px;
 }
 
-/* Adjusted padding to prevent section overlap */
-body {
-    padding-top: 60px;
-}
-
-/* Home Section */
+/* ====== HOME SECTION ====== */
 .home {
     display: flex;
     align-items: center;
@@ -85,7 +81,7 @@ body {
 }
 
 .home-img-container img {
-    width: 180px; /* Adjusted for mobile */
+    width: 180px;
     height: 180px;
     border-radius: 50%;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
@@ -110,7 +106,7 @@ body {
     color: #ff9800;
 }
 
-/* About Me Section */
+/* ====== ABOUT SECTION ====== */
 .about-container {
     display: flex;
     align-items: center;
@@ -141,27 +137,31 @@ body {
 }
 
 .about-img {
-    width: 250px; /* Adjusted for mobile */
+    width: 250px;
     height: 250px;
     border-radius: 50%;
     object-fit: cover;
 }
 
-/* Projects Section */
+/* ====== PROJECTS SECTION ====== */
 .projects {
-    padding: 100px 20px; /* Increased padding to prevent overlap */
+    padding: 100px 20px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
 }
 
+/* Project Card */
 .project-card {
+    position: relative;
     background: #1e1e1e;
     padding: 20px;
     margin: 20px;
     border-radius: 10px;
     width: 300px;
     transition: background 0.3s, transform 0.3s;
+    overflow: hidden;
+    text-align: center;
 }
 
 .project-card:hover {
@@ -169,27 +169,32 @@ body {
     transform: scale(1.05);
 }
 
+/* Project Image */
 .project-card img {
     width: 100%;
     border-radius: 10px;
     margin-bottom: 10px;
 }
 
-/* Ensure project links are clickable */
-.project-card a {
-    display: block;
-    text-decoration: none;
-    color: inherit;
-    padding: 20px;
-    border-radius: 10px;
-    transition: background 0.3s;
+/* Project Details Pop-Up */
+.project-details {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 15px;
+    border-radius: 0 0 10px 10px;
+    transform: translateY(100%);
+    transition: transform 0.3s ease-in-out;
 }
 
-.project-card a:hover {
-    background: rgba(255, 255, 255, 0.1);
+.project-card:hover .project-details {
+    transform: translateY(0);
 }
 
-/* Contact Section */
+/* ====== CONTACT SECTION ====== */
 .contact {
     padding: 50px 20px;
     background: #1e1e1e;
@@ -222,13 +227,13 @@ body {
     background: #e68900;
 }
 
-/* Footer */
+/* ====== FOOTER ====== */
 .footer {
     background: #000;
     padding: 20px;
 }
 
-/* Responsive Design */
+/* ====== RESPONSIVE DESIGN ====== */
 @media (max-width: 768px) {
     .home {
         flex-direction: column;
@@ -253,4 +258,41 @@ body {
     .navbar a {
         font-size: 0.9rem;  
     }
+}
+
+/* ====== USER DATA SECTION ====== */
+.user-data-container {
+    text-align: center;
+    margin: 40px auto;
+    width: 80%;
+    max-width: 800px;
+}
+
+.animated-title {
+    font-size: 2rem;
+    color: #ffcc00;
+    font-family: "Courier New", Courier, monospace;
+    text-transform: uppercase;
+    animation: flicker 1.5s infinite alternate;
+}
+
+/* Title Flicker Effect */
+@keyframes flicker {
+    0% { opacity: 1; }
+    100% { opacity: 0.8; }
+}
+
+.terminal-box {
+    background: black;
+    color: #00ff00;
+    font-family: "Courier New", Courier, monospace;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: left;
+    box-shadow: 0px 0px 15px rgba(0, 255, 0, 0.8);
+    white-space: pre-wrap;
+    font-size: 1rem;
+    overflow: hidden;
+    min-height: 200px;
+    border: 2px solid #00ff00;
 }

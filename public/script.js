@@ -99,3 +99,16 @@ function hideDetails(projectCard) {
     details.style.opacity = "0";
     details.style.transform = "translateY(20px)";
 }
+document.addEventListener("DOMContentLoaded", function () {
+    const projectCards = document.querySelectorAll(".project-card");
+
+    projectCards.forEach(card => {
+        card.addEventListener("mouseover", function () {
+            this.querySelector(".project-details").style.transform = "translateY(0)";
+        });
+
+        card.addEventListener("mouseleave", function () {
+            this.querySelector(".project-details").style.transform = "translateY(100%)";
+        });
+    });
+});
